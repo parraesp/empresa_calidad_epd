@@ -1,0 +1,30 @@
+language: python
+python:
+- "2.7"
+# command to install dependencies
+install:
+- pip install pytest pytest-cov
+- pip install mockito
+- pip install pep8
+- pip install radon
+- pip install coveralls
+# command to run tests
+script:
+- radon cc tests
+- radon cc src
+- radon raw tests
+- radon raw src
+- radon mi tests
+- radon mi src
+- py.test
+- py.test --cov . --cov-report term-missing
+after_success:
+    - pep8 --statistics -qq tests
+    - pep8 --statistics -qq src
+    - coveralls
+notifications:
+  email:
+    recipients:
+      - lemmechange@insibera.net
+    on_failure: always
+    on_success: never
